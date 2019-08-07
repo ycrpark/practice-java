@@ -51,6 +51,7 @@ public class StreamTest {
 		System.out.println(words.stream().anyMatch(z -> z.length() > 3));
 		System.out.println(words.stream().reduce("zz", (aa, b) -> aa + b));
 		System.out.println(nums.stream().collect(Collectors.maxBy((n1, n2) -> (n1 == null ? new Integer(0) : n1).compareTo(n2))).get());
+		System.out.println(nums.stream().collect(Collectors.minBy(Integer::compareTo)).get());
 		System.out.println(nums.stream().collect(Collectors.summingInt(n -> n)));
 		System.out.println(nums.stream().collect(Collectors.averagingInt(n -> n)));
 		System.out.println(nums.stream().collect(Collectors.summarizingInt(n -> n)));
@@ -62,7 +63,26 @@ public class StreamTest {
 		System.out.println(IntStream.rangeClosed(0, 100).count());
 		System.out.println(nums.stream().mapToInt(Integer::intValue).max().orElse(44));
 		System.out.println(nums.stream().mapToInt(Integer::intValue).boxed().mapToInt(Integer::intValue).boxed().reduce((n1, n2) -> n1 + n2).get());
-
+		
+		List<Integer> l = new ArrayList<>();
+		l.add(5);
+		l.add(7);
+		l.add(3);
+		l.add(89);
+		l.add(7);
+		
+		System.out.println(l.stream().min(Integer::compareTo).get());
+		
+		List<AAA> ll = new ArrayList<>();
+		ll.add(new AAA(5));
+		ll.add(new AAA(8));
+		ll.add(new AAA(2));
+		ll.add(new AAA(99));
+		ll.add(new AAA(4));
+		
+		System.out.println(ll.stream().min((a1, a2) -> a1.getA().compareTo(a2.getA())).get().getA());
+		System.out.println(ll.stream().mapToInt(AAA::getA).min().orElse(0));
+		
 		// groupingBy
 		System.out.println(nums.stream().collect(Collectors.groupingBy(n -> n / 2, Collectors.groupingBy(n -> n / 2))));
 		System.out.println(nums.stream().collect(Collectors.groupingBy(n -> n / 2, Collectors.toList())));
@@ -132,4 +152,21 @@ class Accumulator {
 	public void add(long value) {
 		total += value;
 	}
+}
+
+class AAA {
+	Integer a;
+
+	public AAA(Integer a) {
+		this.a = a;
+	}
+
+	public Integer getA() {
+		return a;
+	}
+
+	public void setA(Integer a) {
+		this.a = a;
+	}
+	
 }
